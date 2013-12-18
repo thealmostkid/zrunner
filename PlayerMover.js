@@ -1,18 +1,16 @@
-function PlayerMover() {
+function PlayerMover(updateFunc) {
+	this.updateFunc = updateFunc;
 	this.timer = undefined;
 };
 
 PlayerMover.prototype.updatePosition = function() {
 };
 
-PlayerMover.prototype.registerKeys = function() {
-};
-
 PlayerMover.prototype.startMoving = function() {
+	var update = this.updateFunc;
 	if (this.timer === undefined) {
 		this.timer = setInterval(function() {
-			this.updatePosition();
-			this.drawFunction();
+			update();
 		}, MOVE_INTERVAL_MS);
 	}
 };

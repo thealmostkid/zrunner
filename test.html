@@ -45,7 +45,7 @@
 <script language="JavaScript">
 </script>
 <!--script src="https://rawgithub.com/dmauro/Keypress/master/keypress.js"></script-->
-<script src="keypress/keypress.js"></script>
+<script src="../keypress/keypress.js"></script>
 <script src="PlayerMover.js"></script>
 </head>
 <body>
@@ -169,6 +169,7 @@ function drawRoom() {
 
 var MOVE_FRACTION = .10;
 var MOVE_INTERVAL_MS = 50;
+
 function playerMoveUp() {
 	PLAYER_Y -= MOVE_FRACTION;
 	drawPlayer(PLAYER_X, PLAYER_Y);
@@ -189,67 +190,31 @@ function playerMoveRight() {
 	drawPlayer(PLAYER_X, PLAYER_Y);
 }
 
-function playerStop() {
-	if (movingTimer !== undefined) {
-		clearInterval(movingTimer);
-		movingTimer = undefined;
-	}
-}
-
-
-function playerMove(direction) {
-	var mover = playerStop;
-	if (direction === "up") {
-		mover = playerMoveUp;
-	} else if (direction === "down") {
-		mover = playerMoveDown;
-	} else if (direction === "left") {
-		mover = playerMoveLeft;
-	} else if (direction === "right") {
-		mover = playerMoveRight;
-	}
-
-	if (movingTimer === undefined) {
-		movingTimer = setInterval(mover, 50);
-	}
-}
-
 function registerKeyBoard() {
-	var spaceMover = new PlayerMover();
-	spaceMover.updatePosition = function() {
-		PLAYER_X += MOVE_FRACTION;
-		PLAYER_Y += MOVE_FRACTION;
-	};
-	spaceMover.registerKeys = function() {
-		keypress.register_combo({
-			"keys"		: "space",
-			"on_keydown"	: function() { spaceMover.startMoving() },
-			"on_keyup"	: function() { spaceMover.stopMoving(); }
-		});
-	};
-	spaceMover.registerKeys();
-
-
+	var upMover = new PlayerMover(playerMoveUp);
+	var downMover = new PlayerMover(playerMoveDown);
+	var leftMover = new PlayerMover(playerMoveLeft);
+	var rightMover = new PlayerMover(playerMoveRight);
 	keypress.register_many([
 		{
 			"keys"		: "up",
-			"on_keydown"	: function () { playerMove("up") },
-			"on_keyup"	: playerStop
+			"on_keydown"	: function() { upMover.startMoving(); },
+			"on_keyup"	: function() { upMover.stopMoving(); }
 		},
 		{
 			"keys"		: "down",
-			"on_keydown"	: function () { playerMove("down") },
-			"on_keyup"	: playerStop
+			"on_keydown"	: function() { downMover.startMoving(); },
+			"on_keyup"	: function() { downMover.stopMoving(); }
 		},
 		{
 			"keys"		: "left",
-			"on_keydown"	: function () { playerMove("left") },
-			"on_keyup"	: playerStop
+			"on_keydown"	: function() { leftMover.startMoving(); },
+			"on_keyup"	: function() { leftMover.stopMoving(); }
 		},
 		{
 			"keys"		: "right",
-			"on_keydown"	: function () { playerMove("right") },
-			"on_keyup"	: playerStop
+			"on_keydown"	: function() { rightMover.startMoving(); },
+			"on_keyup"	: function() { rightMover.stopMoving(); }
 		}
 	]);
 }
