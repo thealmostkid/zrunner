@@ -41,6 +41,14 @@
 	outline:1;
 }
 
+.menu {
+	float:left, top;
+	z-index:500;
+	display:none;
+	background-color:black;
+	color:white;
+}
+
 </style>
 <script language="JavaScript">
 </script>
@@ -63,6 +71,18 @@ function coordToPixel(coord) {
 function drawPlayer(x, y) {
 	document.getElementById("player").style["top"] = coordToPixel(y);
 	document.getElementById("player").style["left"] = coordToPixel(x);
+}
+
+function initPlayMenu() {
+	document.write("<div class=\"menu\" id=\"playMenu\">Menu</div>")
+}
+
+function showPlayMenu() {
+	document.getElementById("playMenu").style["display"] = "block";
+}
+
+function hidePlayMenu() {
+	document.getElementById("playMenu").style["display"] = "none";
 }
 
 function initPlayer(x, y) {
@@ -165,6 +185,7 @@ function drawRoom() {
 	PLAYER_X = (totalWidth / 2);
 	PLAYER_Y = (totalHeight / 2);
 	initPlayer(PLAYER_X, PLAYER_Y);
+	initPlayMenu();
 }
 
 var MOVE_FRACTION = .10;
@@ -215,7 +236,13 @@ function registerKeyBoard() {
 			"keys"		: "right",
 			"on_keydown"	: function() { rightMover.startMoving(); },
 			"on_keyup"	: function() { rightMover.stopMoving(); }
+		},
+		{
+			"keys"		: "m",
+			"on_keydown"	: function() { showPlayMenu(); },
+			"on_keyup"	: function() { hidePlayMenu(); }
 		}
+
 	]);
 }
 
