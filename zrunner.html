@@ -54,7 +54,7 @@
 </script>
 <!--script src="https://rawgithub.com/dmauro/Keypress/master/keypress.js"></script-->
 <script src="../keypress/keypress.js"></script>
-<script src="PlayerMover.js"></script>
+<script src="Repeatable.js"></script>
 </head>
 <body>
 
@@ -212,30 +212,30 @@ function playerMoveRight() {
 }
 
 function registerKeyBoard() {
-	var upMover = new PlayerMover(playerMoveUp);
-	var downMover = new PlayerMover(playerMoveDown);
-	var leftMover = new PlayerMover(playerMoveLeft);
-	var rightMover = new PlayerMover(playerMoveRight);
+	var upMover = new Repeatable(playerMoveUp, MOVE_INTERVAL_MS);
+	var downMover = new Repeatable(playerMoveDown, MOVE_INTERVAL_MS);
+	var leftMover = new Repeatable(playerMoveLeft, MOVE_INTERVAL_MS);
+	var rightMover = new Repeatable(playerMoveRight, MOVE_INTERVAL_MS);
 	keypress.register_many([
 		{
 			"keys"		: "up",
-			"on_keydown"	: function() { upMover.startMoving(); },
-			"on_keyup"	: function() { upMover.stopMoving(); }
+			"on_keydown"	: function() { upMover.start(); },
+			"on_keyup"	: function() { upMover.stop(); }
 		},
 		{
 			"keys"		: "down",
-			"on_keydown"	: function() { downMover.startMoving(); },
-			"on_keyup"	: function() { downMover.stopMoving(); }
+			"on_keydown"	: function() { downMover.start(); },
+			"on_keyup"	: function() { downMover.stop(); }
 		},
 		{
 			"keys"		: "left",
-			"on_keydown"	: function() { leftMover.startMoving(); },
-			"on_keyup"	: function() { leftMover.stopMoving(); }
+			"on_keydown"	: function() { leftMover.start(); },
+			"on_keyup"	: function() { leftMover.stop(); }
 		},
 		{
 			"keys"		: "right",
-			"on_keydown"	: function() { rightMover.startMoving(); },
-			"on_keyup"	: function() { rightMover.stopMoving(); }
+			"on_keydown"	: function() { rightMover.start(); },
+			"on_keyup"	: function() { rightMover.stop(); }
 		},
 		{
 			"keys"		: "m",
