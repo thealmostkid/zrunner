@@ -37,12 +37,12 @@
 	z-index:100;
 	background-color:green;
 	position:fixed;
-	float:left, top;
+	float:left;
 	outline:1;
 }
 
 .menu {
-	float:left, top;
+	float:left;
 	z-index:500;
 	display:none;
 	background-color:black;
@@ -62,7 +62,6 @@
 var TILE_SIZE = 25;
 var PLAYER_X = 0;
 var PLAYER_Y = 0;
-var movingTimer = undefined;
 
 function coordToPixel(coord) {
 	return coord * TILE_SIZE;
@@ -74,15 +73,18 @@ function drawPlayer(x, y) {
 }
 
 function initPlayMenu() {
-	document.write("<div class=\"menu\" id=\"playMenu\">Menu</div>")
+	document.write("<div class=\"menu\" id=\"playMenu\" style=\"display:none\">Menu</div>")
 }
 
-function showPlayMenu() {
-	document.getElementById("playMenu").style["display"] = "block";
-}
-
-function hidePlayMenu() {
-	document.getElementById("playMenu").style["display"] = "none";
+function togglePlayMenu() {
+	var state = document.getElementById("playMenu").style["display"]; 
+	console.log(state);
+	console.log(typeof(state));
+	if (state === "none") {
+		document.getElementById("playMenu").style["display"] = "block";
+	} else {
+		document.getElementById("playMenu").style["display"] = "none";
+	}
 }
 
 function initPlayer(x, y) {
@@ -239,8 +241,7 @@ function registerKeyBoard() {
 		},
 		{
 			"keys"		: "m",
-			"on_keydown"	: function() { showPlayMenu(); },
-			"on_keyup"	: function() { hidePlayMenu(); }
+			"on_keydown"	: function() { togglePlayMenu(); },
 		}
 
 	]);
@@ -253,24 +254,6 @@ function main() {
 
 main();
 </script>
-
-<!--
-<div class="tile" id="corner" style="top:0px; left:0px; width:25px; height:25px;"></div>
-<div class="tile" id="northWall" style="top:0px; left:25px; width:25px; height:25px;"></div>
-<div class="tile" id="northWall" style="top:0px; left:50px; width:25px; height:25px;"></div>
-<div class="tile" id="corner" style="top:0px; left:75px; width:25px; height:25px;"></div>
-<div class=northwall style="width=25px height=25px left:25px top:0px"></div>
-<div class=northWall style="width=26px height=25px left:50px top:0px"></div>
-<div id=corner width=25px height=25px left:75px top:0px></div>
-<div id=westWall width=25px height=25px left:0px top:25px></div>
-<div id=floor width=25px height=25px left:25px top:25px></div>
-<div id=floor width=25px height=25px left:50 top:25px></div>
-<div id=eastWall width=25px height=25px left:75 top:25px></div>
-<div id=corner width=25px height=25px left:0px top:50px></div>
-<div id=southWall width=25px height=25px left:25px top:50px></div>
-<div id=southWall width=25px height=25px left:50px top:50px></div>
-<div id=corner width=25px height=25px left:75px top:50px></div>
--->
 
 </body>
 </html>
