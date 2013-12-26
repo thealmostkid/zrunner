@@ -47,6 +47,7 @@
 	display:none;
 	background-color:black;
 	color:white;
+	position:fixed;
 }
 
 </style>
@@ -73,15 +74,48 @@ function drawPlayer(x, y) {
 }
 
 function initPlayMenu() {
-	document.write("<div class=\"menu\" id=\"playMenu\" style=\"display:none\">Menu</div>")
+	document.write('<div class="menu" id="playMenu" style="display:none; top:15px; left:15px; width:0px; height:0px;">Menu</div>')
 }
+
+var GROW_MULTIPLIER = 1.3;
+var PLAY_MENU_WIDTH = 200;
+var PLAY_MENU_HEIGHT = 200;
+var PLAY_MENU_X = 15;
+var PLAY_MENU_Y = 15;
+function animateMenu() {
+	var currentWidth = parseInt(document.getElementById('playMenu').style['width']);
+	var currentHeight = parseInt(document.getElementById('playMenu').style['height']);
+	if (isNaN(currentWidth) || currentWidth <= 0) {
+		currentWidth = 1;
+	}
+	if (isNaN(currentHeight) || currentHeight <= 0) {
+		currentHeight = 1;
+	}
+	if (currentWidth < PLAY_MENU_WIDTH || currentHeight < PLAY_MENU_HEIGHT) {
+		var targetWidth = Math.min(Math.ceil(currentWidth * GROW_MULTIPLIER), PLAY_MENU_WIDTH);
+		var targetHeight = Math.min(Math.ceil(currentHeight * GROW_MULTIPLIER), PLAY_MENU_HEIGHT);
+		document.getElementById('playMenu').style['width'] = targetWidth;
+		document.getElementById('playMenu').style['height'] = targetHeight;
+		document.getElementById('playMenu').style['left'] = PLAY_MENU_X;
+		document.getElementById('playMenu').style['top'] = PLAY_MENU_Y;
+	} else {
+		document.getElementById('playMenu').innerHTML = '<center>Menu</center>';
+		playMenu.stop();
+	}
+}
+
+var playMenu = new Repeatable(animateMenu, 10);
 
 function togglePlayMenu() {
 	var state = document.getElementById("playMenu").style["display"]; 
-	console.log(state);
-	console.log(typeof(state));
 	if (state === "none") {
 		document.getElementById("playMenu").style["display"] = "block";
+		document.getElementById("playMenu").style["width"] = 1;
+		document.getElementById("playMenu").style["height"] = 1;
+		document.getElementById("playMenu").style["left"] = coordToPixel(PLAYER_X);
+		document.getElementById("playMenu").style["top"] = coordToPixel(PLAYER_Y);
+		document.getElementById("playMenu").innerHTML = "";
+		playMenu.start();
 	} else {
 		document.getElementById("playMenu").style["display"] = "none";
 	}
