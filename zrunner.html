@@ -284,9 +284,25 @@ function registerKeyBoard() {
 function main() {
 	registerKeyBoard();
 	drawRoom();
-}
+
+	/*
+	var eventLoop = new EventLoop();
+	eventLoop.start();
+
+	var controller = new Controller();
+
+	var playerState = new Player(); // from db?
+	var playerView = new HTMLPlayerRenderer();
+	controller.addComponent(playerState, playerView);
+
+	var view = new HTMLGameView(eventLoop);
+	var gameState = new Game(eventLoop, view);
+	controller.addComponent(gameState);
+	*/
+};
 
 main();
+
 </script>
 
 </body>
