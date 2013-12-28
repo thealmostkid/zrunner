@@ -49,4 +49,18 @@ describe('EventLoop', function() {
       eventLoop.events.length.should.equal(1);
     });
   });
+
+  describe('#stop()', function(){
+    it('should ignore events', function(done){
+      this.timeout(110);
+      eventLoop.start();
+      eventLoop.stop();
+      eventLoop.scheduleEvent(5, function(){
+        false.should.equal(true);
+      });
+      setTimeout(function(){
+        done();
+      }, 75);
+    });
+  });
 });
