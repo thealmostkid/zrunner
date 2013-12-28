@@ -34,7 +34,7 @@ describe('EventLoop', function() {
     it('should obey timestamp', function(done){
       this.timeout(150);
       eventLoop.scheduleEvent(500, function(){
-        assert.fail(false, true, 'unexpected callback');
+        false.should.be.true;
       });
       eventLoop.start();
       setTimeout(done, 145);
@@ -56,7 +56,7 @@ describe('EventLoop', function() {
       eventLoop.start();
       eventLoop.stop();
       eventLoop.scheduleEvent(5, function(){
-        assert.fail(false, true, 'unexpected callback');
+        false.should.be.true;
       });
       setTimeout(function(){
         done();
