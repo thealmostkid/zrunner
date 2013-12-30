@@ -56,23 +56,29 @@
 <script src="https://rawgithub.com/dmauro/Keypress/master/keypress.js"></script>
 <!--script src="../node_modules/keypress/index.js"></script-->
 <script src="Repeatable.js"></script>
-<script src="Map.js"></script>
-<script src="Player.js"></script>
-<script src="World.js"></script>
+<script src="controller.js"></script>
+<script src="map.js"></script>
+<script src="player.js"></script>
+<script src="world.js"></script>
+<script src="playerHTMLRenderer.js"></script>
 </head>
 <body>
 
 <script language="JavaScript">
 var TILE_SIZE = 25;
-var player = new Player();
+var controller = new Controller();
+var player = new Player(controller);
 
 function coordToPixel(coord) {
 	return coord * TILE_SIZE;
 }
 
 function drawPlayer(player) {
+	PlayerHTMLRenderer.prototype.update(document.getElementById('player'), player, coordToPixel);
+/*
 	document.getElementById("player").style["top"] = coordToPixel(player.Y);
 	document.getElementById("player").style["left"] = coordToPixel(player.X);
+*/
 }
 
 function initPlayMenu() {
