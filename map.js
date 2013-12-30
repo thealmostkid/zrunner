@@ -27,6 +27,6 @@ Map.prototype.addStaticObject = function(x, y, object) {
   this.layout[x][y] = object;
 }
 
-if (module !== undefined) {
+if (typeof module != 'undefined') {
   module.exports.Map = Map;
 }

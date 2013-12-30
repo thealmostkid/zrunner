@@ -11,6 +11,6 @@ StaticObject.WEST_WALL = 5;
 StaticObject.CORNER = 6;
 StaticObject.DOOR = 7;
 
-if (module !== undefined) {
+if (typeof module != 'undefined') {
   module.exports.StaticObject = StaticObject;
 }
