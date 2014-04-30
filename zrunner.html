@@ -53,24 +53,32 @@
 </style>
 <script language="JavaScript">
 </script>
-<!--script src="https://rawgithub.com/dmauro/Keypress/master/keypress.js"></script-->
-<script src="../keypress/keypress.js"></script>
+<script src="https://rawgithub.com/dmauro/Keypress/master/keypress.js"></script>
+<!--script src="../node_modules/keypress/index.js"></script-->
 <script src="Repeatable.js"></script>
+<script src="controller.js"></script>
+<script src="map.js"></script>
+<script src="player.js"></script>
+<script src="world.js"></script>
+<script src="playerHTMLRenderer.js"></script>
 </head>
 <body>
 
 <script language="JavaScript">
 var TILE_SIZE = 25;
-var PLAYER_X = 0;
-var PLAYER_Y = 0;
+var controller = new Controller();
+var player = new Player(controller);
 
 function coordToPixel(coord) {
 	return coord * TILE_SIZE;
 }
 
-function drawPlayer(x, y) {
-	document.getElementById("player").style["top"] = coordToPixel(y);
-	document.getElementById("player").style["left"] = coordToPixel(x);
+function drawPlayer(player) {
+	PlayerHTMLRenderer.prototype.update(document.getElementById('player'), player, coordToPixel);
+/*
+	document.getElementById("player").style["top"] = coordToPixel(player.Y);
+	document.getElementById("player").style["left"] = coordToPixel(player.X);
+*/
 }
 
 function initPlayMenu() {
@@ -112,8 +120,8 @@ function togglePlayMenu() {
 		document.getElementById("playMenu").style["display"] = "block";
 		document.getElementById("playMenu").style["width"] = 1;
 		document.getElementById("playMenu").style["height"] = 1;
-		document.getElementById("playMenu").style["left"] = coordToPixel(PLAYER_X);
-		document.getElementById("playMenu").style["top"] = coordToPixel(PLAYER_Y);
+		document.getElementById("playMenu").style["left"] = coordToPixel(player.X);
+		document.getElementById("playMenu").style["top"] = coordToPixel(player.Y);
 		document.getElementById("playMenu").innerHTML = "";
 		playMenu.start();
 	} else {
@@ -121,9 +129,9 @@ function togglePlayMenu() {
 	}
 }
 
-function initPlayer(x, y) {
-	var xPixels = coordToPixel(x);
-	var yPixels = coordToPixel(y);
+function initPlayer(player) {
+	var xPixels = coordToPixel(player.X);
+	var yPixels = coordToPixel(player.Y);
 	// make initial player
 	document.write("<div class=\"playerSprite\" id=\"player\" style=\"top:", yPixels, "px; left:", xPixels, "px; width:", TILE_SIZE, "px; height:", TILE_SIZE, "px;\"></div>")
 }
@@ -218,9 +226,9 @@ function drawRoom() {
 	drawHorizontalDoor(3, y, 4);
 	drawVerticalDoor((totalWidth - 1), (totalHeight / 2), 2);
 
-	PLAYER_X = (totalWidth / 2);
-	PLAYER_Y = (totalHeight / 2);
-	initPlayer(PLAYER_X, PLAYER_Y);
+	player.X = (totalWidth / 2);
+	player.Y = (totalHeight / 2);
+	initPlayer(player);
 	initPlayMenu();
 }
 
@@ -228,23 +236,23 @@ var MOVE_FRACTION = .10;
 var MOVE_INTERVAL_MS = 50;
 
 function playerMoveUp() {
-	PLAYER_Y -= MOVE_FRACTION;
-	drawPlayer(PLAYER_X, PLAYER_Y);
+	player.Y -= MOVE_FRACTION;
+	drawPlayer(player);
 }
 
 function playerMoveDown() {
-	PLAYER_Y += MOVE_FRACTION;
-	drawPlayer(PLAYER_X, PLAYER_Y);
+	player.Y += MOVE_FRACTION;
+	drawPlayer(player);
 }
 
 function playerMoveLeft() {
-	PLAYER_X -= MOVE_FRACTION;
-	drawPlayer(PLAYER_X, PLAYER_Y);
+	player.X -= MOVE_FRACTION;
+	drawPlayer(player);
 }
 
 function playerMoveRight() {
-	PLAYER_X += MOVE_FRACTION;
-	drawPlayer(PLAYER_X, PLAYER_Y);
+	player.X += MOVE_FRACTION;
+	drawPlayer(player);
 }
 
 function registerKeyBoard() {
@@ -284,22 +292,9 @@ function registerKeyBoard() {
 function main() {
 	registerKeyBoard();
 	drawRoom();
-
-	/*
-	var eventLoop = new EventLoop();
-	eventLoop.start();
-
-	var controller = new Controller();
-
-	var playerState = new Player(); // from db?
-	var playerView = new HTMLPlayerRenderer();
-	controller.addComponent(playerState, playerView);
-
-	var view = new HTMLGameView(eventLoop);
-	var gameState = new Game(eventLoop, view);
-	controller.addComponent(gameState);
-	*/
-};
+	var world = new World();
+	console.log(world.map);
+}
 
 main();
 
