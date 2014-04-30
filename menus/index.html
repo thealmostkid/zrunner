@@ -1,0 +1,186 @@
+<html>
+<title>Menu Example</title>
+<head>
+<style>
+ul.topMenu
+{
+float:left;
+width:100%;
+margin:0;
+padding:0;
+list-style-type:none;
+clear:left;
+clear:top;
+}
+ul.subMenu
+{
+float:left;
+margin:0;
+padding:0;
+list-style-type:none;
+z-index:100;
+}
+
+li.topMenu
+{
+display:inline;
+}
+li.subMenu
+{
+}
+
+a.topMenu
+{
+float:left;
+width:6em;
+color:white;
+background:black;
+padding:5px;
+margin:0px;
+border-right:1px solid white;
+text-decoration:none
+}
+a.subMenu
+{
+float:left;
+width:6em;
+color:red;
+background:grey;
+padding:5px;
+margin:0px;
+border-top:1px solid white;
+text-decoration:none
+}
+
+div.alert
+{
+z-index:500;
+position:fixed;
+top:80px;
+left:50px;
+border:1px solid black;
+border-radius:10px;
+background:#DCDCDC;
+color:red;
+padding:10px;
+text-align:center;
+vertical-align:top;
+}
+
+div.renderer
+{
+margin:5px;
+width:640px;
+height:480px;
+border:4px solid black;
+background:blue;
+float:left;
+z-index:0;
+}
+
+</style>
+<script language=JavaScript>
+
+/*******************************************************************************
+ *
+ * Menus
+ *
+ ******************************************************************************/
+function toggleSubMenu(submenuName, x, y) {
+  console.log("elementName=" + submenuName);
+  var element = document.getElementById(submenuName);
+  if (element !== null) {
+    var displayStatus = element.style.display;
+    console.log("status='" + displayStatus + "'");
+    if (displayStatus !== 'none') {
+      element.style.display = 'none';
+    } else {
+      element.style.position = "absolute";
+      element.style.left = x;
+      element.style.top = y;
+      element.style.display = 'inline';
+    }
+  }
+}
+
+function displaySubMenu(topMenuElement) {
+  console.log(topMenuElement.id);
+  console.log(topMenuElement.posx);
+  var rect = topMenuElement.getBoundingClientRect();
+  var subMenuLeft = rect.left + 2;
+  var subMenuTop = rect.bottom;
+  var menuName = topMenuElement.id;
+  var submenuName = menuName.replace('top', 'sub');
+  toggleSubMenu(submenuName, subMenuLeft, subMenuTop);
+}
+
+/*******************************************************************************
+ *
+ * Alert processing
+ *
+ ******************************************************************************/
+function getAlertElement() {
+  return document.getElementById("alert");
+}
+
+function displayAlert(text) {
+  var alertElement = getAlertElement();
+  if (alertElement) {
+    var textElement = document.getElementById("alertText");
+    if (textElement) {
+      textElement.innerHTML = text;
+    }
+    alertElement.style.display = 'block';
+  }
+}
+
+function hideAlert() {
+  var alertElement = getAlertElement();
+  if (alertElement !== null) {
+    alertElement.style.display = 'none';
+  }
+}
+</script>
+</head>
+
+<body>
+
+<div class="game">
+<!-- SUBMENU file -->
+<ul class="subMenu" id="submenu.file" style="display:none">
+<li class="subMenu"><a href=# class="subMenu" onclick="toggleSubMenu('submenu.file')">New</a><li>
+<li class="subMenu"><a href=# class="subMenu" onclick="toggleSubMenu('submenu.file', 0, 0); displayAlert('LOAD');">Load</a><li>
+<li class="subMenu"><a href=# class="subMenu" onclick="toggleSubMenu('submenu.file', 0, 0);">Save</a><li>
+<li class="subMenu"><a href=# class="subMenu" onclick="toggleSubMenu('submenu.file', 0, 0);">Quit</a><li>
+</ul>
+
+<!-- SUBMENU game -->
+<ul class="subMenu" id="submenu.game" style="display:none">
+<li class="subMenu"><a href=# class="subMenu" onclick="toggleSubMenu('submenu.game')">Pause</a><li>
+<li class="subMenu"><a href=# class="subMenu" onclick="toggleSubMenu('submenu.game')">Items</a><li>
+</ul>
+
+<!-- ALERT NOTIFICATION -->
+<div class="alert" id="alert" style="display:none;">
+<p id="alertText" style="padding:0px; margin:1px; margin-bottom:10px;">Pop Up!</p>
+<center>
+<a href=# style="text-decoration: none; box-shadow: 3px 3px 5px #888888; border:1px solid black; background:white; color:black; padding:1px; margin-left:auto; margin-right:auto; vertical-align:bottom" onclick="hideAlert();">Close</a>
+</center>
+</div>
+
+<!-- TOPMENU -->
+<ul class="topMenu">
+<li class="topMenu"><a href=# id="topmenu.file" class="topMenu" onclick="displaySubMenu(this);">File</a></li>
+<li class="topMenu"><a href=# id="topmenu.game" class="topMenu" onclick="displaySubMenu(this);">Game</a></li>
+</ul>
+
+<div class="renderer">
+</div> <!-- renderer -->
+
+<script>
+displayAlert("Welcome To This Awesome Demo!");
+</script>
+</div> <!-- game -->
+
+</body>
+</html>
