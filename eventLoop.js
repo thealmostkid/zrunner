@@ -1,7 +1,7 @@
-function EventLoop() {
+function EventLoop(loopPeriodMS) {
   this.events = [];
   this.timer = undefined;
-  this.periodMS = 10;
+  this.periodMS = loopPeriodMS;
   this.totalIterations = 0;
 };
 
