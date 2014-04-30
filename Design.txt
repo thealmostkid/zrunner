@@ -1,0 +1,69 @@
+world has current map
+on change: publish to controller->map_changed, map
+view: listen for map_changed event
+
+
+
+interface publishes "move up", etc.
+playermover subscribes to those and calls setPosition on player
+
+
+eventLoop
+	simulation.update 1+	// fast
+	render() 1		// slowest part
+	processInput (?)	// what is appropriate rate to check?
+
+render:
+	vistor pattern? WorldObject.visit(renderVisitor)->calls
+	renderVisitor.apply(thisObject);
+	// visitor is overkill
+	// BUT! double dispatch is needed
+	?? each object has to know how to render itself to different renderers?o
+	// register functions?  each object
+	// do I really need to support multiple renderers?
+	// renderer adds the functions to prototype! (no information hiding
+	// though)
+
+
+	render order is important.  Have to maintain z-axis.  render objects
+	with lowest z-value first.
+	world:
+	renderer.render(obj);
+	renderer:
+	obj.getRGBAPixels();getPosition();getWidth();getHeight();
+	obj.getTextCharacter();
+
+
+
+simulation:
+	for each object:
+		object.update
+
+	collision detection?
+
+
+
+PHASE 2:
+
+register callback with animation pollyfill.
+animation_callback() {
+animate_ui();
+simulation.send_ui_events();
+update_simulation();
+render(canvas.bytes, simulation);
+}
+
+keypresses.register();
+onKeyPress.enqueue event; // is it fast enough?
+menus can create events too:  pause, quit, load simulation.
+
+File: New, Load, Save, Quit
+Game: Pause, Items
+
+world does physics and keeps track of objects
+-maps?
+
+render takes a world state and draws it
+
+default interface that is clickable?  Written in css/html/javascript.  Actual
+game play is not clickable.

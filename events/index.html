@@ -1,0 +1,43 @@
+<html>
+<head>
+<script src="animatePolyfill.js"></script>
+</head>
+
+<body>
+
+<canvas id="pixelsCanvas" width="320" height="240" style="border:1px solid #d3d3d3;">
+This text is displayed if your browser does not support HTML5 Canvas.
+</canvas>
+
+<script language=JavaScript>
+function draw() {
+  var now = new Date().getTime();
+  count = count + 1;
+  var elapsedTimeSec = ((now - startTime) / 1000);
+  var text = "0fps";
+  if (elapsedTimeSec > 0) {
+    text = "" + Math.floor(count / elapsedTimeSec) + "fps";
+  }
+  context.clearRect(0,0,canvas.width,canvas.height);
+  context.fillStyle="black";
+  context.font = "30px Arial";
+  context.fillText(text,10,50);
+}
+
+function animate() {
+  requestAnimationFrame( animate );
+  draw();
+}
+
+var startTime = new Date().getTime();
+var count = 0;
+
+var canvas = document.getElementById("pixelsCanvas");
+var context = canvas.getContext("2d");
+
+animate();
+
+</script>
+
+</body>
+</html>
