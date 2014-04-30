@@ -52,10 +52,11 @@ while (running) {
 */
 
 Game.prototype.gameLoop = function() {
-  simulation.processEvents(getPendingEvents());
-  simulation.simulate();
-  interfaceAnimateCallback();
-  render(canvas.bytes(), simulation.getRenderState());
+  this.simulation.processEvents(this.getPendingEvents());
+  this.pendingEvents = [];
+  this.simulation.simulate();
+  this.interfaceAnimateCallback();
+  //this.render(canvas.bytes(), this.simulation.getRenderState());
 }
 
 if (typeof module != 'undefined') {

@@ -7,13 +7,13 @@ describe('Game', function(){
   function noAnimate(){
   }
 
-  var mockSimulation = {
+  var noSimulation = {
     processEvents: function(eventList) { },
     simulate: function() { }
   }
 
   beforeEach(function(){
-    game = new Game(noAnimate, mockSimulation);
+    game = new Game(noAnimate, noSimulation);
   });
 
   describe('#enqueueEvent()', function(){
@@ -54,20 +54,51 @@ describe('Game', function(){
   });
 
   describe('#gameLoop', function(){
+    var mockedGame = undefined;
+    var animated = 0;
+
+    function countAnimate(){
+      animated = animated + 1;
+    }
+
+    var mockSimulation = {
+      events: [],
+      simulated: 0,
+      processEvents: function(eventList) {
+        this.events = eventList;
+      },
+      simulate: function() {
+        this.simulated = this.simulated + 1;
+      }
+    }
+
+    beforeEach(function(){
+      mockGame = new Game(countAnimate, mockSimulation);
+    });
+
     it('should send events to simulation', function(){
-      fail();
+      mockSimulation.events.length.should.equal(0);
+      mockGame.enqueueEvent(1);
+      mockGame.gameLoop();
+      mockSimulation.events.length.should.equal(1);
     });
 
     it('should clear events', function(){
-      fail();
+      mockGame.enqueueEvent(1);
+      mockGame.gameLoop();
+      mockGame.pendingEvents.length.should.equal(0);
     });
 
     it('should simulate', function(){
-      fail();
+      var simulationStart = mockSimulation.simulated;
+      mockGame.gameLoop();
+      mockSimulation.simulated.should.equal(simulationStart + 1);
     });
 
     it('should update interface', function(){
-      fail();
+      var interfaceStart = animated;
+      mockGame.gameLoop();
+      animated.should.equal(interfaceStart + 1);
     });
 
     it('should render', function(){
