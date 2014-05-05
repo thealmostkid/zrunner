@@ -20,6 +20,7 @@ Game.prototype.getPendingEvents = function() {
 
 
 /*
+// http://gameprogrammingpatterns.com/game-loop.html
 double previous = getCurrentTime();
 double lag = 0.0;
 while (true)
@@ -40,6 +41,7 @@ while (true)
   render();
 }
 
+// http://higherorderfun.com/blog/2010/08/17/understanding-the-game-main-loop/
 while (running) {
     if (isTimeToUpdate()) {
         processInput();
